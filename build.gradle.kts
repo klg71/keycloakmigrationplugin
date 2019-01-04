@@ -37,9 +37,9 @@ repositories {
 
 pluginBundle {
     website = "https://www.klg71.de"
-    vcsUrl = "https://github.com/klg71/keycloakmigration"
+    vcsUrl = "https://github.com/klg71/keycloakmigrationplugin"
     tags = listOf("keycloak", "migration")
-    version = "0.0.2"
+    version = "0.0.5"
 
     plugins {
         create("keycloakmigrationplugin") {
@@ -58,6 +58,7 @@ publishing {
         }
     }
 }
+
 artifactory {
     setContextUrl("https://artifactory.klg71.de/artifactory")
     publish(delegateClosureOf<PublisherConfig> {
@@ -65,7 +66,7 @@ artifactory {
             setProperty("repoKey", "keycloakmigration-plugin")
             setProperty("username", project.findProperty("artifactory_user"))
             setProperty("password", project.findProperty("artifactory_password"))
-            setProperty("maven", true)
+            setProperty("maven", false)
 
         })
         defaults(delegateClosureOf<GroovyObject> {
