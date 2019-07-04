@@ -11,7 +11,7 @@ plugins {
 
 dependencies {
     compile(kotlin("stdlib"))
-    compile("de.klg71:keycloakmigration:0.0.2-SNAPSHOT")
+    compile("de.klg71:keycloakmigration:0.0.4")
     compile(kotlin("reflect"))
     implementation(gradleApi())
     implementation(localGroovy())
@@ -39,7 +39,6 @@ pluginBundle {
     website = "https://www.klg71.de"
     vcsUrl = "https://github.com/klg71/keycloakmigrationplugin"
     tags = listOf("keycloak", "migration")
-    version = "0.0.5"
 
     plugins {
         create("keycloakmigrationplugin") {
@@ -66,7 +65,7 @@ artifactory {
             setProperty("repoKey", "keycloakmigration-plugin")
             setProperty("username", project.findProperty("artifactory_user"))
             setProperty("password", project.findProperty("artifactory_password"))
-            setProperty("maven", false)
+            setProperty("maven", true)
 
         })
         defaults(delegateClosureOf<GroovyObject> {

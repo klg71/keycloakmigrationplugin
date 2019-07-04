@@ -22,13 +22,15 @@ open class KeycloakMigrationExtension {
     var baseUrl = "http://localhost:8080"
     var adminUser = "admin"
     var adminPassword = "admin"
+    var realm = "master"
 }
 
-open class GradleMigrationArgs(private val adminUser: String, private val adminPassword: String, private val migrationFile: String, private val baseUrl: String) : MigrationArgs {
+open class GradleMigrationArgs(private val adminUser: String, private val adminPassword: String, private val migrationFile: String, private val baseUrl: String, private val realm: String) : MigrationArgs {
     override fun adminUser() = adminUser
     override fun adminPassword() = adminPassword
     override fun baseUrl() = baseUrl
     override fun migrationFile() = migrationFile
+    override fun realm() = realm
 }
 
 open class KeycloakMigrationTask : DefaultTask() {
@@ -36,7 +38,7 @@ open class KeycloakMigrationTask : DefaultTask() {
     @TaskAction
     fun migrate() {
         project.extensions.findByType(KeycloakMigrationExtension::class.java)!!.let {
-            GradleMigrationArgs(it.adminUser, it.adminPassword, it.migrationFile, it.baseUrl)
+            GradleMigrationArgs(it.adminUser, it.adminPassword, it.migrationFile, it.baseUrl, it.realm)
         }.let {
             de.klg71.keycloakmigration.migrate(it)
         }
