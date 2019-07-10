@@ -3,15 +3,16 @@ import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
 import org.jfrog.gradle.plugin.artifactory.dsl.ResolverConfig
 
 plugins {
-    kotlin("jvm") version "1.3.0"
+    kotlin("jvm") version "1.3.41"
     id("com.gradle.plugin-publish") version "0.10.0"
      `maven-publish`
     id("com.jfrog.artifactory") version "4.8.1"
+    id("java-gradle-plugin")
 }
 
 dependencies {
     compile(kotlin("stdlib"))
-    compile("de.klg71:keycloakmigration:0.0.4")
+    compileOnly("de.klg71:keycloakmigration:0.0.6")
     compile(kotlin("reflect"))
     implementation(gradleApi())
     implementation(localGroovy())
@@ -75,4 +76,21 @@ artifactory {
     resolve(delegateClosureOf<ResolverConfig> {
         setProperty("repoKey", "libs-release")
     })
+}
+
+tasks {
+    withType(Jar::class){
+        from(configurations.runtime.map { if (it.isDirectory) it else zipTree(it) })
+        from(configurations.compileOnly.map { if (it.isDirectory) it else zipTree(it) })
+        exclude("kotlin/**")
+        exclude("kotlinx/**")
+        exclude("org/gradle/**")
+        exclude("META-INF/gradle-plugins/org*")
+        exclude("*.properties")
+        exclude("META-INF/INDEX.LIST")
+        exclude("META-INF/*.kotlin_module")
+        exclude("META-INF/*.SF")
+        exclude("META-INF/*.RSA")
+        exclude("META-INF/*.DSA")
+    }
 }
