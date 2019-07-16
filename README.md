@@ -1,7 +1,7 @@
-# Keycloakmigration Gradle Plugin
+# Keycloakmigration Gradle Plugin ![Maven metadata URL](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/de/klg71/keycloakmigrationplugin/maven-metadata.xml.svg?label=gradle)
 
 This project is inspired by the database migration tool liquibase.
-It aims to provide a similiar mechanism for Keycloak.
+It aims to provide a similar mechanism for Keycloak.
 
 
 The main repository is located at [keycloak_migration](https://github.com/klg71/keycloakmigration). This repository contains only the gradle plugin.
@@ -10,70 +10,33 @@ The main repository is located at [keycloak_migration](https://github.com/klg71/
 
 ```gradle
 plugins {
-  id "de.klg71.keycloakmigrationplugin" version "0.0.2"
+  id "de.klg71.keycloakmigrationplugin" version "0.0.x"
 }
 ```
 
-# Migration File
-Migrations are controlled through the changelog. It contains the changeSets used to execute the migration.
+# Usage
+## Groovy
 
-    
-    includes:
-      - path: changesets/01_initial.yml
-      - path: changesets/02_second.yml
+    task keycloakMigrateLocal(type: KeycloakMigrationTask) {
+      group = "keycloak"
+      description = "Migrate the keycloak instance"
 
-A changeset may then look like this:
+      migrationFile = "migration/keycloak-changelog.yml"
+      adminUser = "admin"
+      adminPassword = "admin"
+      baseUrl = "http://localhost:8080"
+      realm = "master"
+    }
 
-    id: initial-keycloak
-    author: klg71
-    changes:
-    - addUser:
-        realm: master
-        name: test
-        enabled: true
-        emailVerified: true
-        attributes:
-          test:
-          - test
-          - test2
-    - updateUser:
-        realm: master
-        name: test
-        enabled: false
-        lastName: Lukas
+## Kotlin
 
-The migration hashes are stored in the attribute named 'migration' in the migration user.
+    register<KeycloakMigrationTask>("keycloakMigrateLocal") {
+        group = "keycloak"
+        description = "Migrate the keycloak instance"
 
-There are no transactions in keycloak though if the rollback fails there might be a non deterministic state.
-If it fails I would like to receive a bug report for this.
-
-# Supported migrations
-This are the currently implemented commands. I hope I can find the time to implement more of them.
-## User Migrations
-### addUser
-### deleteUser
-### updateUser
-### addUserAttribute
-### deleteUserAttribute
-### assignRole
-### revokeRole
-
-## Group Migrations
-### addGroup
-
-## Role Migrations
-### addRole
-### deleteRole
-
-## Client Migrations
-### addSimpleClient
-### deleteClient
-
-## User Federation Migrations
-### AddAdLdap
-
-# TODOS:
-- Add more commands
-- Add sophisticated documentation
-- Add sophisticated unit and integration Tests
-- Test Keycloak with PostgreSQL instead of H2 backend.
+        migrationFile = "migration/keycloak-changelog.yml"
+        adminUser = "admin"
+        adminPassword = "admin"
+        baseUrl = "http://localhost:8080/auth"
+        realm = "master"
+    }
