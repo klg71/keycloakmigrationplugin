@@ -40,3 +40,6 @@ plugins {
         baseUrl = "http://localhost:8080/auth"
         realm = "master"
     }
+    
+For usage information of the migration api please see the containing repository:  [keycloak_migration](https://github.com/klg71/keycloakmigration)
+
