@@ -1,5 +1,4 @@
 # Keycloakmigration Gradle Plugin ![Maven metadata URL](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/de/klg71/keycloakmigrationplugin/maven-metadata.xml.svg?label=gradle)
-
 This project is inspired by the database migration tool liquibase.
 It aims to provide a similar mechanism for Keycloak.
 

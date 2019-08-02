@@ -6,34 +6,22 @@ plugins {
     kotlin("jvm") version "1.3.41"
     id("com.gradle.plugin-publish") version "0.10.0"
      `maven-publish`
+    id("signing")
     id("com.jfrog.artifactory") version "4.8.1"
     id("java-gradle-plugin")
 }
 
 dependencies {
     compile(kotlin("stdlib"))
-    compileOnly("de.klg71:keycloakmigration:0.0.9")
+    compileOnly("de.klg71.keycloakmigration:keycloakmigration:0.0.10")
     compile(kotlin("reflect"))
     implementation(gradleApi())
     implementation(localGroovy())
 }
 
 repositories {
+    mavenCentral()
     jcenter()
-    maven {
-        setUrl("https://artifactory.klg71.de/artifactory/libs-releases")
-        credentials {
-            username = project.findProperty("artifactory_user") as String
-            password = project.findProperty("artifactory_password") as String
-        }
-    }
-    maven {
-        setUrl("https://artifactory.klg71.de/artifactory/keycloakmigration")
-        credentials {
-            username = project.findProperty("artifactory_user") as String
-            password = project.findProperty("artifactory_password") as String
-        }
-    }
 }
 
 pluginBundle {
@@ -59,6 +47,40 @@ publishing {
     }
 }
 
+val publications = project.publishing.publications.withType(MavenPublication::class.java).map {
+    with(it.pom) {
+        withXml {
+            val root = asNode()
+            root.appendNode("name", "keycloakmigration")
+            root.appendNode("description", "Keycloak configuration as migration files")
+            root.appendNode("url", "https://github.com/klg71/keycloakmigration")
+        }
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://github.com/klg71/keycloakmigration")
+                distribution.set("repo")
+            }
+        }
+        developers {
+            developer {
+                id.set("klg71")
+                name.set("Lukas Meisegeier")
+                email.set("MeisegeierLukas@gmx.de")
+            }
+        }
+        scm {
+            url.set("https://github.com/klg71/keycloakmigration")
+            connection.set("scm:git:git://github.com/klg71/keycloakmigration.git")
+            developerConnection.set("scm:git:ssh://git@github.com/klg71/keycloakmigration.git")
+        }
+    }
+}
+
+signing{
+    sign(publishing.publications["mavenJava"])
+}
+
 artifactory {
     setContextUrl("https://artifactory.klg71.de/artifactory")
     publish(delegateClosureOf<PublisherConfig> {
@@ -76,21 +98,4 @@ artifactory {
     resolve(delegateClosureOf<ResolverConfig> {
         setProperty("repoKey", "libs-release")
     })
-}
-
-tasks {
-    withType(Jar::class){
-        from(configurations.runtime.map { if (it.isDirectory) it else zipTree(it) })
-        from(configurations.compileOnly.map { if (it.isDirectory) it else zipTree(it) })
-        exclude("kotlin/**")
-        exclude("kotlinx/**")
-        exclude("org/gradle/**")
-        exclude("META-INF/gradle-plugins/org*")
-        exclude("*.properties")
-        exclude("META-INF/INDEX.LIST")
-        exclude("META-INF/*.kotlin_module")
-        exclude("META-INF/*.SF")
-        exclude("META-INF/*.RSA")
-        exclude("META-INF/*.DSA")
-    }
 }
