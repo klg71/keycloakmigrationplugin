@@ -13,7 +13,7 @@ plugins {
 
 dependencies {
     compile(kotlin("stdlib"))
-    compileOnly("de.klg71.keycloakmigration:keycloakmigration:0.0.10")
+    compile("de.klg71.keycloakmigration:keycloakmigration:0.0.10")
     compile(kotlin("reflect"))
     implementation(gradleApi())
     implementation(localGroovy())
@@ -51,14 +51,14 @@ val publications = project.publishing.publications.withType(MavenPublication::cl
     with(it.pom) {
         withXml {
             val root = asNode()
-            root.appendNode("name", "keycloakmigration")
-            root.appendNode("description", "Keycloak configuration as migration files")
-            root.appendNode("url", "https://github.com/klg71/keycloakmigration")
+            root.appendNode("name", "keycloakmigrationplugin")
+            root.appendNode("description", "Keycloak configuration as migration files, gradle plugin")
+            root.appendNode("url", "https://github.com/klg71/keycloakmigrationplugin")
         }
         licenses {
             license {
                 name.set("MIT License")
-                url.set("https://github.com/klg71/keycloakmigration")
+                url.set("https://github.com/klg71/keycloakmigrationplugin")
                 distribution.set("repo")
             }
         }
@@ -71,8 +71,8 @@ val publications = project.publishing.publications.withType(MavenPublication::cl
         }
         scm {
             url.set("https://github.com/klg71/keycloakmigration")
-            connection.set("scm:git:git://github.com/klg71/keycloakmigration.git")
-            developerConnection.set("scm:git:ssh://git@github.com/klg71/keycloakmigration.git")
+            connection.set("scm:git:git://github.com/klg71/keycloakmigrationplugin.git")
+            developerConnection.set("scm:git:ssh://git@github.com/klg71/keycloakmigrationplugin.git")
         }
     }
 }
