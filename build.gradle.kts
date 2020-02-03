@@ -13,7 +13,7 @@ plugins {
 
 dependencies {
     compile(kotlin("stdlib"))
-    compile("de.klg71.keycloakmigration:keycloakmigration:0.0.10")
+    compile("de.klg71.keycloakmigration:keycloakmigration:0.1.0")
     compile(kotlin("reflect"))
     implementation(gradleApi())
     implementation(localGroovy())
