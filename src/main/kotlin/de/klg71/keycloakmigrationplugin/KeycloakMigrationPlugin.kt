@@ -26,11 +26,14 @@ open class KeycloakMigrationPlugin : Plugin<Project> {
 open class GradleMigrationArgs(private val adminUser: String, private val adminPassword: String,
                                private val migrationFile: String, private val baseUrl: String,
                                private val realm: String, private val clientId: String,
-                               private val correctHashes:Boolean) : MigrationArgs {
+                               private val correctHashes:Boolean,
+                               private val parameters:Map<String,String>) : MigrationArgs {
     override fun adminUser() = adminUser
     override fun adminPassword() = adminPassword
     override fun baseUrl() = baseUrl
     override fun migrationFile() = migrationFile
+    override fun parameters()= parameters
+
     override fun realm() = realm
     override fun clientId() = clientId
     override fun correctHashes() = correctHashes
@@ -49,12 +52,14 @@ open class KeycloakMigrationTask : DefaultTask() {
     var realm = "master"
     @Input
     var clientId = "admin-cli"
+    @Input
+    var parameters = emptyMap<String,String>()
 
     @Suppress("unused")
     @TaskAction
     fun migrate() {
         GradleMigrationArgs(adminUser, adminPassword,
-                Paths.get(project.projectDir.toString(), migrationFile).toString(), baseUrl, realm, clientId, false)
+                Paths.get(project.projectDir.toString(), migrationFile).toString(), baseUrl, realm, clientId, false, parameters)
                 .let {
                     de.klg71.keycloakmigration.migrate(it)
                 }
@@ -76,12 +81,14 @@ open class KeycloakMigrationCorrectHashesTask : DefaultTask() {
     var realm = "master"
     @Input
     var clientId = "admin-cli"
+    @Input
+    var parameters = emptyMap<String,String>()
 
     @Suppress("unused")
     @TaskAction
     fun migrate() {
         GradleMigrationArgs(adminUser, adminPassword,
-                Paths.get(project.projectDir.toString(), migrationFile).toString(), baseUrl, realm, clientId, true)
+                Paths.get(project.projectDir.toString(), migrationFile).toString(), baseUrl, realm, clientId, true, parameters)
                 .let {
                     de.klg71.keycloakmigration.migrate(it)
                 }
