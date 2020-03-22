@@ -7,13 +7,13 @@ plugins {
     id("com.gradle.plugin-publish") version "0.10.0"
      `maven-publish`
     id("signing")
-    id("com.jfrog.artifactory") version "4.8.1"
+    id("com.jfrog.artifactory") version "4.10.0"
     id("java-gradle-plugin")
 }
 
 dependencies {
     compile(kotlin("stdlib"))
-    compile("de.klg71.keycloakmigration:keycloakmigration:0.1.18")
+    compile("de.klg71.keycloakmigration:keycloakmigration:0.1.19")
     compile(kotlin("reflect"))
     implementation(gradleApi())
     implementation(localGroovy())

@@ -108,7 +108,7 @@ With a volume `migration-volume` containing the files:
 ```
 
 Notes
->> You can't run the container as init container because it needs keycloak up and running
+> You can't run the container as init container because it needs keycloak up and running
 
->> The addition `&& tail -f /dev/null` is needed so that Kubernetes wont restart this container forever.
+> The addition `&& tail -f /dev/null` is needed so that Kubernetes wont restart this container forever.
  Alternatively you can implement it as Job
