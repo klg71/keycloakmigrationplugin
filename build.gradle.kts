@@ -4,7 +4,7 @@ import org.jfrog.gradle.plugin.artifactory.dsl.ResolverConfig
 
 plugins {
     kotlin("jvm") version "1.3.41"
-    id("com.gradle.plugin-publish") version "0.10.0"
+    id("com.gradle.plugin-publish") version "0.11.0"
      `maven-publish`
     id("signing")
     id("com.jfrog.artifactory") version "4.10.0"
@@ -13,7 +13,7 @@ plugins {
 
 dependencies {
     api(kotlin("stdlib"))
-    api("de.klg71.keycloakmigration:keycloakmigration:0.1.26")
+    api("de.klg71.keycloakmigration:keycloakmigration:0.1.27")
     api(kotlin("reflect"))
     implementation(gradleApi())
     implementation(localGroovy())
