@@ -1,27 +1,22 @@
-import groovy.lang.GroovyObject
-import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
-import org.jfrog.gradle.plugin.artifactory.dsl.ResolverConfig
-
 plugins {
     kotlin("jvm") version "1.3.41"
     id("com.gradle.plugin-publish") version "0.11.0"
      `maven-publish`
     id("signing")
-    id("com.jfrog.artifactory") version "4.10.0"
     id("java-gradle-plugin")
-}
-
-dependencies {
-    api(kotlin("stdlib"))
-    api("de.klg71.keycloakmigration:keycloakmigration:0.1.30")
-    api(kotlin("reflect"))
-    implementation(gradleApi())
-    implementation(localGroovy())
 }
 
 repositories {
     mavenCentral()
     jcenter()
+}
+
+dependencies {
+    api(kotlin("stdlib"))
+    api("de.klg71.keycloakmigration:keycloakmigration:0.1.31")
+    api(kotlin("reflect"))
+    implementation(gradleApi())
+    implementation(localGroovy())
 }
 
 pluginBundle {
@@ -79,23 +74,4 @@ val publications = project.publishing.publications.withType(MavenPublication::cl
 
 signing{
     sign(publishing.publications["mavenJava"])
-}
-
-artifactory {
-    setContextUrl("https://artifactory.klg71.de/artifactory")
-    publish(delegateClosureOf<PublisherConfig> {
-        repository(delegateClosureOf<GroovyObject> {
-            setProperty("repoKey", "keycloakmigration-plugin")
-            setProperty("username", project.findProperty("artifactory_user"))
-            setProperty("password", project.findProperty("artifactory_password"))
-            setProperty("maven", true)
-
-        })
-        defaults(delegateClosureOf<GroovyObject> {
-            invokeMethod("publications", "mavenJava")
-        })
-    })
-    resolve(delegateClosureOf<ResolverConfig> {
-        setProperty("repoKey", "libs-release")
-    })
 }
