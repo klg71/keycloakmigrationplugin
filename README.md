@@ -28,6 +28,8 @@ plugins {
       baseUrl = "http://localhost:8080"
       realm = "master"
       parameters = [USERNAME: "testUser", PASSWORD: "testPassword"]
+      waitForKeycloak = false
+      waitForKeycloakTimeout = 0L // infinit wait time
     }
     
 Ignore and replace failing hashes:
@@ -62,6 +64,8 @@ Ignore and replace failing hashes:
                 "USER_NAME" to "testUser",
                 "PASSWORD" to "password"
         )
+      waitForKeycloak = false
+      waitForKeycloakTimeout = 0L // infinit wait time
     }
     
 Ignore and replace failing hashes:
